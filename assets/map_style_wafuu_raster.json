@@ -1,0 +1,51 @@
+{
+  "version": 8,
+  "name": "Zairn Wafuu Raster",
+  "sources": {
+    "carto-nolabels": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}@2x.png"
+      ],
+      "tileSize": 256,
+      "attribution": "&copy; OpenStreetMap contributors &copy; CARTO",
+      "maxzoom": 19
+    },
+    "carto-labels": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}@2x.png"
+      ],
+      "tileSize": 256,
+      "maxzoom": 19
+    }
+  },
+  "layers": [
+    {
+      "id": "background",
+      "type": "background",
+      "paint": {
+        "background-color": "#f5f0e8"
+      }
+    },
+    {
+      "id": "base-tiles",
+      "type": "raster",
+      "source": "carto-nolabels",
+      "paint": {
+        "raster-saturation": -0.5,
+        "raster-brightness-max": 0.95,
+        "raster-contrast": -0.05,
+        "raster-hue-rotate": 20
+      }
+    },
+    {
+      "id": "label-tiles",
+      "type": "raster",
+      "source": "carto-labels",
+      "paint": {
+        "raster-opacity": 0.6
+      }
+    }
+  ]
+}

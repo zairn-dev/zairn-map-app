@@ -1,0 +1,22 @@
+{
+  "version": 8,
+  "name": "Standard Raster",
+  "sources": {
+    "carto": {
+      "type": "raster",
+      "tiles": [
+        "https://basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}@2x.png"
+      ],
+      "tileSize": 256,
+      "attribution": "&copy; OpenStreetMap contributors &copy; CARTO",
+      "maxzoom": 19
+    }
+  },
+  "layers": [
+    {
+      "id": "carto-tiles",
+      "type": "raster",
+      "source": "carto"
+    }
+  ]
+}
