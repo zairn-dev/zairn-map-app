@@ -36,6 +36,8 @@ dependencies:
   cupertino_icons: ^1.0.8
   maplibre_gl: ^0.25.0
   path_provider: ^2.1.5
+  flutter_native_splash: ^2.4.7
+  flutter_svg: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -61,6 +63,7 @@ flutter:
 
   assets:
     - assets/
+    - assets/logo/
     - assets/glyphs/Zen Maru Gothic Regular/
     - assets/glyphs/Zen Maru Gothic Bold/
 
@@ -92,3 +95,15 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+# Native splash screen
+flutter_native_splash:
+  color: "#FAF8F5"
+  color_dark: "#1A1714"
+  image: assets/logo/splash_logo.png
+  image_dark: assets/logo/splash_logo_dark.png
+  android_12:
+    color: "#FAF8F5"
+    color_dark: "#1A1714"
+    image: assets/logo/splash_logo.png
+    image_dark: assets/logo/splash_logo_dark.png

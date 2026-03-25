@@ -16,13 +16,17 @@ import 'package:flutter/material.dart';
 class AppTheme {
   AppTheme._();
 
-  // Seed color — warm amber base
-  static const Color _seedColor = Color(0xFF8B6914);
+  // ── Brand colors (from cairn logo) ──
+  // Bottom stone gradient: pink → orange
+  // Middle stones: teal → cyan
+  // Top stone: amber
+  static const Color _seedColor = Color(0xFF00B8A9);
 
-  // Vivid accent colors
-  static const Color _neonCyan = Color(0xFF00E5CC);
-  static const Color _neonPink = Color(0xFFFF2D78);
-  static const Color _neonAmber = Color(0xFFFFAB00);
+  static const Color brandPink = Color(0xFFFF2D78);
+  static const Color brandOrange = Color(0xFFFF9800);
+  static const Color brandTeal = Color(0xFF009688);
+  static const Color brandCyan = Color(0xFF00E5CC);
+  static const Color brandAmber = Color(0xFFFFAB00);
 
   // ──────────────────────────────────────
   // Light Theme
@@ -41,20 +45,26 @@ class AppTheme {
       seedColor: _seedColor,
       brightness: brightness,
     ).copyWith(
-      // Vivid primary — neon cyan for active states
-      primary: isLight ? const Color(0xFF009688) : _neonCyan,
-      onPrimary: isLight ? Colors.white : const Color(0xFF003330),
-      primaryContainer: isLight ? const Color(0xFFB2F5EA) : const Color(0xFF004D47),
-      onPrimaryContainer: isLight ? const Color(0xFF003330) : _neonCyan,
+      // Primary — teal/cyan (middle stones of cairn)
+      primary: isLight ? brandTeal : brandCyan,
+      onPrimary: Colors.white,
+      primaryContainer: isLight ? brandCyan : const Color(0xFF004D47),
+      onPrimaryContainer: isLight ? const Color(0xFF00332E) : brandCyan,
 
-      // Vivid tertiary — hot pink for accents
-      tertiary: isLight ? const Color(0xFFD81B60) : _neonPink,
+      // Secondary — orange/amber (top stone + bottom gradient)
+      secondary: isLight ? brandOrange : brandAmber,
+      onSecondary: Colors.white,
+      secondaryContainer: isLight ? const Color(0xFFFFD180) : const Color(0xFF4A3000),
+      onSecondaryContainer: isLight ? const Color(0xFF3E2700) : brandAmber,
+
+      // Tertiary — hot pink (bottom stone accent)
+      tertiary: brandPink,
       onTertiary: Colors.white,
       tertiaryContainer: isLight ? const Color(0xFFFFD9E3) : const Color(0xFF5C0028),
-      onTertiaryContainer: isLight ? const Color(0xFF3E001A) : _neonPink,
+      onTertiaryContainer: isLight ? const Color(0xFF3E001A) : brandPink,
 
       // Warm surfaces
-      surface: isLight ? const Color(0xFFF8F4EE) : const Color(0xFF1A1714),
+      surface: isLight ? const Color(0xFFFAF8F5) : const Color(0xFF1A1714),
       surfaceContainerHighest: isLight
           ? const Color(0xFFEDE8E0)
           : const Color(0xFF2E2A24),

@@ -70,10 +70,6 @@ class _MapScreenState extends State<MapScreen> {
     return _standardStyle;
   }
 
-  String get _styleLabel {
-    return _currentStyle == MapStyle.wafuu ? '和風' : 'Standard';
-  }
-
   void _onMapCreated(MapLibreMapController controller) {
     _mapController = controller;
   }
@@ -179,6 +175,7 @@ class _MapScreenState extends State<MapScreen> {
                 _MapControl(
                   icon: _isLocating ? Icons.hourglass_top : Icons.my_location,
                   onPressed: _goToCurrentLocation,
+                  accent: true,
                 ),
               ],
             ),
@@ -206,13 +203,13 @@ class _MapScreenState extends State<MapScreen> {
               decoration: BoxDecoration(
                 color: colors.surface.withValues(alpha: 0.9),
                 borderRadius: BorderRadius.circular(12),
-                border: Border.all(
-                  color: colors.outlineVariant.withValues(alpha: 0.3),
-                ),
               ),
               child: Text(
-                'Zairn Map  $_styleLabel',
-                style: theme.textTheme.titleSmall,
+                'Zairn',
+                style: theme.textTheme.titleSmall?.copyWith(
+                  color: colors.primary,
+                  fontWeight: FontWeight.w700,
+                ),
               ),
             ),
           ),
@@ -230,34 +227,43 @@ class _MapControl extends StatelessWidget {
   final IconData icon;
   final VoidCallback onPressed;
   final bool active;
+  final bool accent;
 
   const _MapControl({
     required this.icon,
     required this.onPressed,
     this.active = false,
+    this.accent = false,
   });
 
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
+    Color bg;
+    Color fg;
+    if (active) {
+      bg = colors.primaryContainer;
+      fg = colors.onPrimaryContainer;
+    } else if (accent) {
+      bg = colors.primary;
+      fg = colors.onPrimary;
+    } else {
+      bg = colors.surface;
+      fg = colors.onSurfaceVariant;
+    }
+
     return Material(
       elevation: 2,
       shadowColor: colors.shadow.withValues(alpha: 0.3),
       shape: const CircleBorder(),
       clipBehavior: Clip.antiAlias,
-      color: active ? colors.primaryContainer : colors.surface,
+      color: bg,
       child: InkWell(
         onTap: onPressed,
         child: Padding(
           padding: const EdgeInsets.all(AppSpacing.md - 4),
-          child: Icon(
-            icon,
-            size: 22,
-            color: active
-                ? colors.onPrimaryContainer
-                : colors.onSurfaceVariant,
-          ),
+          child: Icon(icon, size: 22, color: fg),
         ),
       ),
     );
