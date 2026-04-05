@@ -28,6 +28,14 @@ class AppTheme {
   static const Color brandCyan = Color(0xFF00E5CC);
   static const Color brandAmber = Color(0xFFFFAB00);
 
+  // Hex string equivalents for MapLibre annotations
+  static const String brandPinkHex = '#FF2D78';
+  static const String brandOrangeHex = '#FF9800';
+  static const String brandTealHex = '#009688';
+  static const String brandCyanHex = '#00E5CC';
+  static const String brandAmberHex = '#FFAB00';
+  static const String neutralHex = '#B0BEC5';
+
   // ──────────────────────────────────────
   // Light Theme
   // ──────────────────────────────────────
@@ -41,34 +49,39 @@ class AppTheme {
   static ThemeData _buildTheme(Brightness brightness) {
     final isLight = brightness == Brightness.light;
 
-    final colorScheme = ColorScheme.fromSeed(
-      seedColor: _seedColor,
-      brightness: brightness,
-    ).copyWith(
-      // Primary — teal/cyan (middle stones of cairn)
-      primary: isLight ? brandTeal : brandCyan,
-      onPrimary: Colors.white,
-      primaryContainer: isLight ? brandCyan : const Color(0xFF004D47),
-      onPrimaryContainer: isLight ? const Color(0xFF00332E) : brandCyan,
+    final colorScheme =
+        ColorScheme.fromSeed(
+          seedColor: _seedColor,
+          brightness: brightness,
+        ).copyWith(
+          // Primary — teal/cyan (middle stones of cairn)
+          primary: isLight ? brandTeal : brandCyan,
+          onPrimary: Colors.white,
+          primaryContainer: isLight ? brandCyan : const Color(0xFF004D47),
+          onPrimaryContainer: isLight ? const Color(0xFF00332E) : brandCyan,
 
-      // Secondary — orange/amber (top stone + bottom gradient)
-      secondary: isLight ? brandOrange : brandAmber,
-      onSecondary: Colors.white,
-      secondaryContainer: isLight ? const Color(0xFFFFD180) : const Color(0xFF4A3000),
-      onSecondaryContainer: isLight ? const Color(0xFF3E2700) : brandAmber,
+          // Secondary — orange/amber (top stone + bottom gradient)
+          secondary: isLight ? brandOrange : brandAmber,
+          onSecondary: Colors.white,
+          secondaryContainer: isLight
+              ? const Color(0xFFFFD180)
+              : const Color(0xFF4A3000),
+          onSecondaryContainer: isLight ? const Color(0xFF3E2700) : brandAmber,
 
-      // Tertiary — hot pink (bottom stone accent)
-      tertiary: brandPink,
-      onTertiary: Colors.white,
-      tertiaryContainer: isLight ? const Color(0xFFFFD9E3) : const Color(0xFF5C0028),
-      onTertiaryContainer: isLight ? const Color(0xFF3E001A) : brandPink,
+          // Tertiary — hot pink (bottom stone accent)
+          tertiary: brandPink,
+          onTertiary: Colors.white,
+          tertiaryContainer: isLight
+              ? const Color(0xFFFFD9E3)
+              : const Color(0xFF5C0028),
+          onTertiaryContainer: isLight ? const Color(0xFF3E001A) : brandPink,
 
-      // Warm surfaces
-      surface: isLight ? const Color(0xFFFAF8F5) : const Color(0xFF1A1714),
-      surfaceContainerHighest: isLight
-          ? const Color(0xFFEDE8E0)
-          : const Color(0xFF2E2A24),
-    );
+          // Warm surfaces
+          surface: isLight ? const Color(0xFFFAF8F5) : const Color(0xFF1A1714),
+          surfaceContainerHighest: isLight
+              ? const Color(0xFFEDE8E0)
+              : const Color(0xFF2E2A24),
+        );
 
     final textTheme = _buildTextTheme(colorScheme);
 
@@ -77,13 +90,26 @@ class AppTheme {
       brightness: brightness,
       colorScheme: colorScheme,
       textTheme: textTheme,
+      scaffoldBackgroundColor: colorScheme.surface,
+      canvasColor: colorScheme.surface,
+      appBarTheme: AppBarTheme(
+        backgroundColor: colorScheme.surface,
+        foregroundColor: colorScheme.onSurface,
+        elevation: 0,
+        scrolledUnderElevation: 0,
+        centerTitle: false,
+        surfaceTintColor: Colors.transparent,
+        titleTextStyle: textTheme.titleLarge?.copyWith(
+          fontWeight: FontWeight.w700,
+        ),
+      ),
 
       // ── Shape ──
       cardTheme: CardThemeData(
-        elevation: 2,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        elevation: 0,
+        color: colorScheme.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
         clipBehavior: Clip.antiAlias,
       ),
 
@@ -91,35 +117,36 @@ class AppTheme {
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         ),
       ),
       outlinedButtonTheme: OutlinedButtonThemeData(
         style: OutlinedButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 14),
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 12),
         ),
       ),
       textButtonTheme: TextButtonThemeData(
         style: TextButton.styleFrom(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(16),
           ),
         ),
       ),
       floatingActionButtonTheme: FloatingActionButtonThemeData(
-        elevation: 4,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
+        elevation: 0,
+        foregroundColor: colorScheme.onPrimaryContainer,
+        backgroundColor: colorScheme.primaryContainer,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
       iconButtonTheme: IconButtonThemeData(
         style: IconButton.styleFrom(
           shape: const CircleBorder(),
+          foregroundColor: colorScheme.onSurfaceVariant,
         ),
       ),
 
@@ -128,14 +155,17 @@ class AppTheme {
         filled: true,
         fillColor: colorScheme.surfaceContainerHighest,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
         focusedBorder: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide(color: colorScheme.primary, width: 2),
         ),
-        contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 16,
+          vertical: 14,
+        ),
       ),
 
       // ── NavigationBar ──
@@ -143,33 +173,25 @@ class AppTheme {
         elevation: 0,
         indicatorColor: colorScheme.secondaryContainer,
         labelTextStyle: WidgetStatePropertyAll(
-          TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: colorScheme.onSurface,
-          ),
+          textTheme.labelSmall!,
         ),
       ),
 
       // ── Dialog ──
       dialogTheme: DialogThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(20),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(28)),
         elevation: 6,
       ),
 
       // ── Chip ──
       chipTheme: ChipThemeData(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10),
-        ),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
 
       // ── BottomSheet ──
       bottomSheetTheme: BottomSheetThemeData(
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
         ),
         showDragHandle: true,
         backgroundColor: colorScheme.surface,

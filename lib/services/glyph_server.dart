@@ -42,21 +42,26 @@ class GlyphServer {
     final marker = File('$_glyphDir/.extracted');
     if (marker.existsSync()) return;
 
-    const fontNames = [
-      'Zen Maru Gothic Regular',
-      'Zen Maru Gothic Bold',
-    ];
+    const fontNames = ['Zen Maru Gothic Regular', 'Zen Maru Gothic Bold'];
 
     // Ranges matching what was kept by trim_glyphs.sh
     final ranges = <int>[];
     // Latin (0-1279)
-    for (int i = 0; i <= 1024; i += 256) ranges.add(i);
+    for (int i = 0; i <= 1024; i += 256) {
+      ranges.add(i);
+    }
     // Symbols (8192-10239)
-    for (int i = 8192; i <= 9984; i += 256) ranges.add(i);
+    for (int i = 8192; i <= 9984; i += 256) {
+      ranges.add(i);
+    }
     // CJK Symbols, Hiragana, Katakana (12288-13311)
-    for (int i = 12288; i <= 13056; i += 256) ranges.add(i);
+    for (int i = 12288; i <= 13056; i += 256) {
+      ranges.add(i);
+    }
     // CJK Ideographs (19968-40959)
-    for (int i = 19968; i <= 40704; i += 256) ranges.add(i);
+    for (int i = 19968; i <= 40704; i += 256) {
+      ranges.add(i);
+    }
     // CJK Compat + Halfwidth/Fullwidth
     ranges.addAll([63744, 64000, 65024, 65280]);
 

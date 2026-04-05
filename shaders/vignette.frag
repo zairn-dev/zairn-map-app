@@ -13,5 +13,5 @@ void main() {
     float dist = length(center) * 1.4;
     float vignette = smoothstep(0.5, 1.2, dist);
     float alpha = vignette * 0.45;
-    fragColor = vec4(0.18, 0.12, 0.08, alpha);
+    fragColor = vec4(0.08, 0.12, 0.18, alpha);
 }

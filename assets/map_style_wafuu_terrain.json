@@ -17,7 +17,6 @@
     }
   },
   "glyphs": "https://otanl.github.io/zairn-glyphs/{fontstack}/{range}.pbf",
-  "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
   "layers": [
     {
       "id": "background",

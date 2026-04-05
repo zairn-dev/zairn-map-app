@@ -16,15 +16,14 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
-// Force Java 17 for all subprojects (maplibre_gl incorrectly sets Java 21
-// which is not supported by Android's javac)
+// Only force Java 17 on maplibre_gl (it incorrectly sets Java 21)
 gradle.projectsEvaluated {
-    rootProject.subprojects {
-        tasks.withType<JavaCompile>().configureEach {
+    rootProject.subprojects.filter { it.name == "maplibre_gl" }.forEach { project ->
+        project.tasks.withType<JavaCompile>().configureEach {
             sourceCompatibility = JavaVersion.VERSION_17.toString()
             targetCompatibility = JavaVersion.VERSION_17.toString()
         }
-        tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+        project.tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
             compilerOptions {
                 jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
             }

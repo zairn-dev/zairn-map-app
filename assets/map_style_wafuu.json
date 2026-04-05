@@ -8,13 +8,12 @@
     }
   },
   "glyphs": "https://otanl.github.io/zairn-glyphs/{fontstack}/{range}.pbf",
-  "sprite": "https://tiles.openfreemap.org/sprites/ofm_f384/ofm",
   "layers": [
     {
       "id": "background",
       "type": "background",
       "paint": {
-        "background-color": "#f5f0e8"
+        "background-color": "#F5F7FA"
       }
     },
     {
@@ -28,7 +27,7 @@
         "residential"
       ],
       "paint": {
-        "fill-color": "#efe9df",
+        "fill-color": "#EFF2F7",
         "fill-opacity": 0.4
       }
     },
@@ -56,7 +55,7 @@
         ]
       ],
       "paint": {
-        "fill-color": "#ebe5d9",
+        "fill-color": "#EAEEF5",
         "fill-opacity": 0.4
       }
     },
@@ -66,7 +65,7 @@
       "source": "openmaptiles",
       "source-layer": "park",
       "paint": {
-        "fill-color": "#c8d8b0",
+        "fill-color": "#A8E6CF",
         "fill-opacity": 0.5
       }
     },
@@ -81,7 +80,7 @@
         "grass"
       ],
       "paint": {
-        "fill-color": "#d4dfc4",
+        "fill-color": "#C1F0D8",
         "fill-opacity": 0.4
       }
     },
@@ -96,7 +95,7 @@
         "wood"
       ],
       "paint": {
-        "fill-color": "#a8c090",
+        "fill-color": "#7BC9A0",
         "fill-opacity": 0.35
       }
     },
@@ -106,8 +105,8 @@
       "source": "openmaptiles",
       "source-layer": "water",
       "paint": {
-        "fill-color": "#7b9ab8",
-        "fill-opacity": 0.85
+        "fill-color": "#56C2D9",
+        "fill-opacity": 0.75
       }
     },
     {
@@ -116,7 +115,7 @@
       "source": "openmaptiles",
       "source-layer": "waterway",
       "paint": {
-        "line-color": "#7b9ab8",
+        "line-color": "#56C2D9",
         "line-width": [
           "interpolate",
           [
@@ -141,7 +140,7 @@
       "source-layer": "building",
       "minzoom": 13,
       "paint": {
-        "fill-color": "#d8cfc0",
+        "fill-color": "#DDE3EC",
         "fill-opacity": [
           "interpolate",
           [
@@ -164,7 +163,7 @@
       "source-layer": "building",
       "minzoom": 14,
       "paint": {
-        "line-color": "#b8a890",
+        "line-color": "#B0BAC8",
         "line-width": 0.5,
         "line-opacity": [
           "interpolate",
@@ -201,7 +200,7 @@
         ]
       ],
       "paint": {
-        "line-color": "#c8bfb0",
+        "line-color": "#C4CDD8",
         "line-width": [
           "interpolate",
           [
@@ -245,7 +244,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#c8bfb0",
+        "line-color": "#C4CDD8",
         "line-width": [
           "interpolate",
           [
@@ -286,7 +285,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#f0ebe0",
+        "line-color": "#F0F3F8",
         "line-width": [
           "interpolate",
           [
@@ -328,7 +327,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#c0b8a4",
+        "line-color": "#B8C4D0",
         "line-width": [
           "interpolate",
           [
@@ -369,7 +368,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#f0e8d8",
+        "line-color": "#EEF2F8",
         "line-width": [
           "interpolate",
           [
@@ -409,7 +408,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#b8a888",
+        "line-color": "#A0B4C8",
         "line-width": [
           "interpolate",
           [
@@ -449,7 +448,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#ede4d0",
+        "line-color": "#E8EEF5",
         "line-width": [
           "interpolate",
           [
@@ -489,7 +488,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#a89070",
+        "line-color": "#8AACC0",
         "line-width": [
           "interpolate",
           [
@@ -529,7 +528,7 @@
         "line-join": "round"
       },
       "paint": {
-        "line-color": "#e8d8b8",
+        "line-color": "#E0EAF2",
         "line-width": [
           "interpolate",
           [
@@ -558,7 +557,7 @@
         "rail"
       ],
       "paint": {
-        "line-color": "#8a7868",
+        "line-color": "#7890A0",
         "line-width": [
           "interpolate",
           [
@@ -587,7 +586,7 @@
         "rail"
       ],
       "paint": {
-        "line-color": "#f5f0e8",
+        "line-color": "#F5F7FA",
         "line-width": [
           "interpolate",
           [
@@ -620,7 +619,7 @@
         2
       ],
       "paint": {
-        "line-color": "#8a6050",
+        "line-color": "#6080A0",
         "line-width": 1.5,
         "line-opacity": 0.6
       }
@@ -649,7 +648,7 @@
         "text-max-width": 5
       },
       "paint": {
-        "text-color": "#4a6a88",
+        "text-color": "#3A8CA8",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
@@ -685,7 +684,7 @@
         "text-max-width": 6
       },
       "paint": {
-        "text-color": "#5a4a3a",
+        "text-color": "#3A4A5A",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
@@ -721,7 +720,7 @@
         "text-max-width": 6
       },
       "paint": {
-        "text-color": "#5a4a3a",
+        "text-color": "#3A4A5A",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
@@ -769,7 +768,7 @@
         "text-max-width": 6
       },
       "paint": {
-        "text-color": "#4a3828",
+        "text-color": "#2A3A4A",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
@@ -817,7 +816,7 @@
         "text-max-width": 8
       },
       "paint": {
-        "text-color": "#3a2818",
+        "text-color": "#1A2A3A",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
@@ -871,7 +870,7 @@
         "text-max-width": 8
       },
       "paint": {
-        "text-color": "#2a1808",
+        "text-color": "#0A1A2A",
         "text-halo-color": "rgba(255, 255, 255, 0.8)",
         "text-halo-width": 1,
         "text-halo-blur": 0.5
