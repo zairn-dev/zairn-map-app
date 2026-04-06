@@ -35,7 +35,7 @@ Each feature follows `data/` (models + service) / `presentation/` (screens) / `p
 | State | Riverpod |
 | Routing | GoRouter (StatefulShellRoute) |
 | Backend | Supabase (Auth, Realtime, Storage, PostgreSQL) |
-| SDK | [zairn-flutter](https://github.com/zairn-dev/zairn-flutter) |
+| SDK | [zairn-flutter](https://github.com/zairn-dev/zairn-sdk-flutter) |
 | GPS | Geolocator (background tracking) |
 
 ## Setup
@@ -46,7 +46,7 @@ git clone https://github.com/zairn-dev/zairn-map-app.git
 cd zairn-map-app
 
 # Clone SDK (sibling directory)
-git clone https://github.com/zairn-dev/zairn-flutter.git ../zairn-flutter
+git clone https://github.com/zairn-dev/zairn-sdk-flutter.git ../zairn-sdk-flutter
 
 # Install dependencies
 flutter pub get
