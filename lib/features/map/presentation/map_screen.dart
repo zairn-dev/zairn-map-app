@@ -6,12 +6,9 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-import '../../../core/navigation/adaptive_liquid_glass.dart';
 import '../../../core/widgets/adaptive_glass_card.dart';
-import '../../../core/widgets/adaptive_glass_icon_button.dart';
 import '../../../core/widgets/adaptive_glass_pill_button.dart';
 import '../../../services/glyph_server.dart';
 import '../../posts/data/post_models.dart';
@@ -693,36 +690,22 @@ class _GlassButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
-    final shape = LiquidOval(
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.34)),
-    );
 
-    return AdaptiveLiquidGlass(
-      shape: shape,
-      settings: LiquidGlassSettings(
-        thickness: 12,
-        blur: 4,
-        glassColor: colors.surface.withValues(alpha: 0.14),
-        lightIntensity: 0.48,
-        ambientStrength: 0.2,
-        saturation: 1.04,
-        chromaticAberration: 0.002,
+    return Material(
+      color: colors.surface.withValues(alpha: 0.88),
+      shape: CircleBorder(
+        side: BorderSide(
+          color: colors.outlineVariant.withValues(alpha: 0.2),
+        ),
       ),
-      child: Material(
-        color: Colors.transparent,
-        shape: const CircleBorder(),
-        child: InkWell(
-          customBorder: const CircleBorder(),
-          onTap: onPressed,
-          child: Ink(
-            width: 48,
-            height: 48,
-            decoration: ShapeDecoration(
-              color: colors.surface.withValues(alpha: 0.1),
-              shape: shape,
-            ),
-            child: Icon(icon, size: 22, color: colors.onSurfaceVariant),
-          ),
+      elevation: 0,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onPressed,
+        child: SizedBox(
+          width: 48,
+          height: 48,
+          child: Icon(icon, size: 22, color: colors.onSurfaceVariant),
         ),
       ),
     );
@@ -766,29 +749,23 @@ class _GlassPanel extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
     final radius = expanded ? 18.0 : 999.0;
-    final shape = LiquidRoundedSuperellipse(
-      borderRadius: radius,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.32)),
-    );
 
-    return AdaptiveLiquidGlass(
-      shape: shape,
-      settings: LiquidGlassSettings(
-        thickness: 16,
-        blur: 5,
-        glassColor: colors.surface.withValues(alpha: expanded ? 0.18 : 0.14),
-        lightIntensity: 0.5,
-        ambientStrength: 0.22,
-        saturation: 1.06,
-        chromaticAberration: 0.002,
-      ),
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: colors.surface.withValues(alpha: expanded ? 0.18 : 0.14),
-          shape: shape,
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.88),
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.2),
         ),
-        child: child,
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: 0.06),
+            blurRadius: 12,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
+      child: child,
     );
   }
 }
@@ -1533,30 +1510,25 @@ class _SelectedLocationPostCard extends ConsumerWidget {
     final colors = theme.colorScheme;
     final profileAsync = ref.watch(userProfileProvider(post.authorId));
     final avatarUrl = profileAsync.asData?.value?.avatarUrl;
-    final shape = LiquidRoundedSuperellipse(
-      borderRadius: 20,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.42)),
-    );
-
-    return AdaptiveLiquidGlass(
-      shape: shape,
-      settings: LiquidGlassSettings(
-        thickness: 18,
-        blur: 6,
-        glassColor: colors.surface.withValues(alpha: 0.18),
-        lightIntensity: 0.5,
-        ambientStrength: 0.22,
-        saturation: 1.08,
-        chromaticAberration: 0.002,
-      ),
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: colors.surface.withValues(alpha: 0.18),
-          shape: shape,
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.2),
         ),
-        child: Material(
-          color: Colors.transparent,
-          child: Padding(
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
+        child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -1590,11 +1562,10 @@ class _SelectedLocationPostCard extends ConsumerWidget {
                         ],
                       ),
                     ),
-                    AdaptiveGlassIconButton(
+                    IconButton(
                       onPressed: onClose,
                       icon: const Icon(Icons.close),
                       tooltip: 'Close',
-                      size: 40,
                       iconSize: 18,
                     ),
                   ],
@@ -1707,7 +1678,6 @@ class _SelectedLocationPostCard extends ConsumerWidget {
               ],
             ),
           ),
-        ),
       ),
     );
   }

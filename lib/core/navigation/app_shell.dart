@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -41,79 +43,179 @@ class AppShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final currentIndex = navigationShell.currentIndex;
-    final shellShape = LiquidRoundedSuperellipse(
-      borderRadius: 28,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.34)),
-    );
+    // Map tab (index 0) has PlatformView — glass won't work over it
+    final isOnPlatformView = currentIndex == 0;
 
     return Scaffold(
       extendBody: true,
       body: navigationShell,
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: AdaptiveLiquidGlass(
-          rebuildKey: 'shell_bar',
-          settings: LiquidGlassSettings(
-            thickness: 14,
-            blur: 5,
-            glassColor: colors.surface.withValues(alpha: 0.14),
-            lightIntensity: 0.55,
-            ambientStrength: 0.18,
-            saturation: 1.08,
-            chromaticAberration: 0.003,
-          ),
-          shape: shellShape,
-          child: DecoratedBox(
-            decoration: ShapeDecoration(
-              color: colors.surface.withValues(alpha: 0.14),
-              shape: shellShape,
-            ),
-            child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-              child: SizedBox(
-                height: 56,
-                child: Row(
-                  children: [
-                    _NavTab(
-                      icon: Icons.explore_outlined,
-                      activeIcon: Icons.explore,
-                      label: 'Map',
-                      isActive: currentIndex == 0,
-                      onTap: () => _switchTab(0),
-                    ),
-                    _NavTab(
-                      icon: Icons.dynamic_feed_outlined,
-                      activeIcon: Icons.dynamic_feed,
-                      label: 'Feed',
-                      isActive: currentIndex == 1,
-                      onTap: () => _switchTab(1),
-                    ),
-                    // Center action button — context-dependent
-                    _CenterAction(
-                      currentIndex: currentIndex,
-                      onCompose: () => _openComposer(context, ref),
-                    ),
-                    _NavTab(
-                      icon: Icons.people_outline,
-                      activeIcon: Icons.people,
-                      label: 'Friends',
-                      isActive: currentIndex == 2,
-                      onTap: () => _switchTab(2),
-                    ),
-                    _NavTab(
-                      icon: Icons.person_outline,
-                      activeIcon: Icons.person,
-                      label: 'Profile',
-                      isActive: currentIndex == 3,
-                      onTap: () => _switchTab(3),
-                    ),
-                  ],
-                ),
+        child: isOnPlatformView
+            ? _SolidBottomBar(
+                currentIndex: currentIndex,
+                onSwitchTab: _switchTab,
+                onCompose: () => _openComposer(context, ref),
+              )
+            : _GlassBottomBar(
+                currentIndex: currentIndex,
+                onSwitchTab: _switchTab,
+                onCompose: () => _openComposer(context, ref),
               ),
+      ),
+    );
+  }
+}
+
+/// Bottom bar for use over PlatformView (Map) — no blur, frosted solid style
+class _SolidBottomBar extends StatelessWidget {
+  const _SolidBottomBar({
+    required this.currentIndex,
+    required this.onSwitchTab,
+    required this.onCompose,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onSwitchTab;
+  final VoidCallback onCompose;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.88),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(
+          color: colors.outlineVariant.withValues(alpha: 0.2),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: 0.08),
+            blurRadius: 20,
+            offset: const Offset(0, -4),
+          ),
+        ],
+      ),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+        child: SizedBox(
+          height: 56,
+          child: _NavRow(
+            currentIndex: currentIndex,
+            onSwitchTab: onSwitchTab,
+            onCompose: onCompose,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+/// Bottom bar for Flutter-rendered screens — uses LiquidGlass
+class _GlassBottomBar extends StatelessWidget {
+  const _GlassBottomBar({
+    required this.currentIndex,
+    required this.onSwitchTab,
+    required this.onCompose,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onSwitchTab;
+  final VoidCallback onCompose;
+
+  @override
+  Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
+    final shellShape = LiquidRoundedSuperellipse(
+      borderRadius: 28,
+      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.34)),
+    );
+
+    return AdaptiveLiquidGlass(
+      rebuildKey: 'shell_bar',
+      settings: LiquidGlassSettings(
+        thickness: 14,
+        blur: 5,
+        glassColor: colors.surface.withValues(alpha: 0.14),
+        lightIntensity: 0.55,
+        ambientStrength: 0.18,
+        saturation: 1.08,
+        chromaticAberration: 0.003,
+      ),
+      shape: shellShape,
+      child: DecoratedBox(
+        decoration: ShapeDecoration(
+          color: colors.surface.withValues(alpha: 0.14),
+          shape: shellShape,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+          child: SizedBox(
+            height: 56,
+            child: _NavRow(
+              currentIndex: currentIndex,
+              onSwitchTab: onSwitchTab,
+              onCompose: onCompose,
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+/// Shared row content for both solid and glass bottom bars
+class _NavRow extends StatelessWidget {
+  const _NavRow({
+    required this.currentIndex,
+    required this.onSwitchTab,
+    required this.onCompose,
+  });
+
+  final int currentIndex;
+  final ValueChanged<int> onSwitchTab;
+  final VoidCallback onCompose;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        _NavTab(
+          icon: Icons.explore_outlined,
+          activeIcon: Icons.explore,
+          label: 'Map',
+          isActive: currentIndex == 0,
+          onTap: () => onSwitchTab(0),
+        ),
+        _NavTab(
+          icon: Icons.dynamic_feed_outlined,
+          activeIcon: Icons.dynamic_feed,
+          label: 'Feed',
+          isActive: currentIndex == 1,
+          onTap: () => onSwitchTab(1),
+        ),
+        // Center action — context-dependent
+        _CenterAction(
+          currentIndex: currentIndex,
+          onCompose: onCompose,
+        ),
+        _NavTab(
+          icon: Icons.people_outline,
+          activeIcon: Icons.people,
+          label: 'Friends',
+          isActive: currentIndex == 2,
+          onTap: () => onSwitchTab(2),
+        ),
+        _NavTab(
+          icon: Icons.person_outline,
+          activeIcon: Icons.person,
+          label: 'Profile',
+          isActive: currentIndex == 3,
+          onTap: () => onSwitchTab(3),
+        ),
+      ],
     );
   }
 }
@@ -129,12 +231,8 @@ class _CenterAction extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Map(0) or Feed(1) → compose post
-    // Friends(2) → add friend (TODO: wire up)
-    // Profile(3) → hidden
     final isVisible = currentIndex <= 2;
     final icon = currentIndex == 2 ? Icons.person_add : Icons.add;
-    final onTap = currentIndex == 2 ? null : onCompose; // TODO: add friend action
 
     if (!isVisible) {
       return const SizedBox(width: 56);
@@ -143,7 +241,7 @@ class _CenterAction extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 4),
       child: GestureDetector(
-        onTap: onTap,
+        onTap: currentIndex == 2 ? null : onCompose,
         child: Container(
           width: 48,
           height: 48,
