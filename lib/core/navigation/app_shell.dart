@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -43,77 +41,22 @@ class AppShell extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final colors = Theme.of(context).colorScheme;
     final currentIndex = navigationShell.currentIndex;
-    // Map tab (index 0) has PlatformView — glass won't work over it
-    final isOnPlatformView = currentIndex == 0;
-
     return Scaffold(
       extendBody: true,
       body: navigationShell,
       bottomNavigationBar: SafeArea(
         minimum: const EdgeInsets.fromLTRB(12, 0, 12, 12),
-        child: isOnPlatformView
-            ? _SolidBottomBar(
-                currentIndex: currentIndex,
-                onSwitchTab: _switchTab,
-                onCompose: () => _openComposer(context, ref),
-              )
-            : _GlassBottomBar(
-                currentIndex: currentIndex,
-                onSwitchTab: _switchTab,
-                onCompose: () => _openComposer(context, ref),
-              ),
-      ),
-    );
-  }
-}
-
-/// Bottom bar for use over PlatformView (Map) — no blur, frosted solid style
-class _SolidBottomBar extends StatelessWidget {
-  const _SolidBottomBar({
-    required this.currentIndex,
-    required this.onSwitchTab,
-    required this.onCompose,
-  });
-
-  final int currentIndex;
-  final ValueChanged<int> onSwitchTab;
-  final VoidCallback onCompose;
-
-  @override
-  Widget build(BuildContext context) {
-    final colors = Theme.of(context).colorScheme;
-
-    return Container(
-      decoration: BoxDecoration(
-        color: colors.surface.withValues(alpha: 0.88),
-        borderRadius: BorderRadius.circular(28),
-        border: Border.all(
-          color: colors.outlineVariant.withValues(alpha: 0.2),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: colors.shadow.withValues(alpha: 0.08),
-            blurRadius: 20,
-            offset: const Offset(0, -4),
-          ),
-        ],
-      ),
-      child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
-        child: SizedBox(
-          height: 56,
-          child: _NavRow(
-            currentIndex: currentIndex,
-            onSwitchTab: onSwitchTab,
-            onCompose: onCompose,
-          ),
+        child: _GlassBottomBar(
+          currentIndex: currentIndex,
+          onSwitchTab: _switchTab,
+          onCompose: () => _openComposer(context, ref),
         ),
       ),
     );
   }
 }
 
-/// Bottom bar for Flutter-rendered screens — uses LiquidGlass
+/// Bottom bar with LiquidGlass
 class _GlassBottomBar extends StatelessWidget {
   const _GlassBottomBar({
     required this.currentIndex,
