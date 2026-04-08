@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../core/navigation/glass_mode_provider.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/widgets/adaptive_glass_app_bar.dart';
 import '../../../core/widgets/adaptive_glass_card.dart';
@@ -13,25 +12,6 @@ import '../providers/settings_provider.dart';
 
 class SettingsScreen extends ConsumerWidget {
   const SettingsScreen({super.key});
-
-  String _glassModeSubtitle(GlassModeOverride mode, bool autoUsesFakeGlass) {
-    return switch (mode) {
-      GlassModeOverride.auto =>
-        autoUsesFakeGlass
-            ? 'Auto is currently using fake glass on this device.'
-            : 'Auto is currently using real liquid glass on this device.',
-      GlassModeOverride.fake =>
-        'Force the bottom bar to use the fallback renderer.',
-      GlassModeOverride.real =>
-        'Force the bottom bar to use the real liquid glass renderer.',
-    };
-  }
-
-  String _glassModeHint(bool autoUsesFakeGlass) {
-    return autoUsesFakeGlass
-        ? 'Recommended for emulator work: keep Auto or Fake.'
-        : 'Recommended for physical devices: compare Auto and Real.';
-  }
 
   Future<void> _signOut(BuildContext context, WidgetRef ref) async {
     await ref.read(authServiceProvider).signOut();
@@ -46,10 +26,6 @@ class SettingsScreen extends ConsumerWidget {
     final theme = Theme.of(context);
     final colors = theme.colorScheme;
     final settingsAsync = ref.watch(userSettingsProvider);
-    final glassMode =
-        ref.watch(glassModeOverrideProvider).value ?? GlassModeOverride.auto;
-    final autoUsesFakeGlass = ref.watch(autoUseFakeGlassProvider).value ?? true;
-
     return Scaffold(
       appBar: const AdaptiveGlassAppBar(title: Text('Settings')),
       body: SafeArea(
@@ -61,68 +37,6 @@ class SettingsScreen extends ConsumerWidget {
               'Use this screen for ghost mode, notifications, emergency stop, and sign out. For now it is the entry point only.',
               style: theme.textTheme.bodyLarge?.copyWith(
                 color: colors.onSurfaceVariant,
-              ),
-            ),
-            const SizedBox(height: 20),
-            AdaptiveGlassCard(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    children: [
-                      const Icon(Icons.blur_on_outlined),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: Text(
-                          'Bottom bar glass',
-                          style: theme.textTheme.titleMedium,
-                        ),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    _glassModeSubtitle(glassMode, autoUsesFakeGlass),
-                    style: theme.textTheme.bodyMedium?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  SegmentedButton<GlassModeOverride>(
-                    showSelectedIcon: false,
-                    segments: const [
-                      ButtonSegment<GlassModeOverride>(
-                        value: GlassModeOverride.auto,
-                        label: Text('Auto'),
-                      ),
-                      ButtonSegment<GlassModeOverride>(
-                        value: GlassModeOverride.fake,
-                        label: Text('Fake'),
-                      ),
-                      ButtonSegment<GlassModeOverride>(
-                        value: GlassModeOverride.real,
-                        label: Text('Real'),
-                      ),
-                    ],
-                    selected: {glassMode},
-                    onSelectionChanged: (selection) {
-                      if (selection.isEmpty) {
-                        return;
-                      }
-                      ref
-                          .read(glassModeOverrideProvider.notifier)
-                          .setMode(selection.first);
-                    },
-                  ),
-                  const SizedBox(height: 12),
-                  Text(
-                    _glassModeHint(autoUsesFakeGlass),
-                    style: theme.textTheme.bodySmall?.copyWith(
-                      color: colors.onSurfaceVariant,
-                    ),
-                  ),
-                ],
               ),
             ),
             const SizedBox(height: 20),

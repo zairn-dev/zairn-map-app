@@ -6,10 +6,8 @@ import 'package:flutter/foundation.dart' show kIsWeb;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart' show rootBundle;
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-import '../../../core/navigation/adaptive_liquid_glass.dart';
 import '../../../core/widgets/adaptive_glass_card.dart';
 import '../../../core/widgets/adaptive_glass_pill_button.dart';
 import '../../../services/glyph_server.dart';
@@ -412,16 +410,9 @@ class _MapScreenState extends ConsumerState<MapScreen>
       });
     }
 
-    return LiquidGlassLayer(
-      settings: const LiquidGlassSettings(
-        thickness: 14,
-        blur: 12,
-        glassColor: Color(0x20FFFFFF),
-        refractiveIndex: 1.08,
-      ),
-      child: Stack(
-        children: [
-          MapLibreMap(
+    return Stack(
+      children: [
+        MapLibreMap(
             key: ValueKey('map_$kIsWeb'),
           onMapCreated: _onMapCreated,
           onCameraIdle: _onCameraIdle,
@@ -569,8 +560,7 @@ class _MapScreenState extends ConsumerState<MapScreen>
               ),
             ),
           ),
-        ],
-      ),
+      ],
     );
   }
 
@@ -701,10 +691,15 @@ class _GlassButton extends StatelessWidget {
   Widget build(BuildContext context) {
     final colors = Theme.of(context).colorScheme;
 
-    return GestureDetector(
-      onTap: onPressed,
-      child: LiquidGlass(
-        shape: const LiquidOval(),
+    return Material(
+      color: colors.surface.withValues(alpha: 0.92),
+      shape: CircleBorder(
+        side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.15)),
+      ),
+      elevation: 0,
+      child: InkWell(
+        customBorder: const CircleBorder(),
+        onTap: onPressed,
         child: SizedBox(
           width: 48,
           height: 48,
@@ -753,20 +748,20 @@ class _GlassPanel extends StatelessWidget {
     final colors = Theme.of(context).colorScheme;
     final radius = expanded ? 18.0 : 999.0;
 
-    final shape = LiquidRoundedSuperellipse(
-      borderRadius: radius,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.32)),
-    );
-
-    return LiquidGlass(
-      shape: shape,
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: colors.surface.withValues(alpha: 0.12),
-          shape: shape,
-        ),
-        child: child,
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.92),
+        borderRadius: BorderRadius.circular(radius),
+        border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.15)),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 2),
+          ),
+        ],
       ),
+      child: child,
     );
   }
 }
@@ -1511,20 +1506,22 @@ class _SelectedLocationPostCard extends ConsumerWidget {
     final colors = theme.colorScheme;
     final profileAsync = ref.watch(userProfileProvider(post.authorId));
     final avatarUrl = profileAsync.asData?.value?.avatarUrl;
-    final shape = LiquidRoundedSuperellipse(
-      borderRadius: 20,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.42)),
-    );
-
-    return LiquidGlass(
-      shape: shape,
-      child: DecoratedBox(
-        decoration: ShapeDecoration(
-          color: colors.surface.withValues(alpha: 0.14),
-          shape: shape,
-        ),
-        child: Material(
-          color: Colors.transparent,
+    return Container(
+      decoration: BoxDecoration(
+        color: colors.surface.withValues(alpha: 0.95),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.15)),
+        boxShadow: [
+          BoxShadow(
+            color: colors.shadow.withValues(alpha: 0.08),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Material(
+        color: Colors.transparent,
+        borderRadius: BorderRadius.circular(20),
         child: Padding(
             padding: const EdgeInsets.fromLTRB(14, 14, 14, 14),
             child: Column(
@@ -1675,7 +1672,6 @@ class _SelectedLocationPostCard extends ConsumerWidget {
               ],
             ),
           ),
-        ),
       ),
     );
   }

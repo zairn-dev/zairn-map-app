@@ -1,74 +1,61 @@
 import 'package:flutter/material.dart';
 
-import 'adaptive_glass_card.dart';
-import 'adaptive_glass_icon_button.dart';
-
-class AdaptiveGlassAppBar extends StatelessWidget
-    implements PreferredSizeWidget {
+class AdaptiveGlassAppBar extends StatelessWidget implements PreferredSizeWidget {
   const AdaptiveGlassAppBar({
     super.key,
     required this.title,
-    this.actions,
     this.leading,
-    this.automaticallyImplyLeading = true,
+    this.actions,
     this.centerTitle = false,
   });
 
   final Widget title;
-  final List<Widget>? actions;
   final Widget? leading;
-  final bool automaticallyImplyLeading;
+  final List<Widget>? actions;
   final bool centerTitle;
 
   @override
-  Size get preferredSize => const Size.fromHeight(76);
+  Size get preferredSize => const Size.fromHeight(64);
 
   @override
   Widget build(BuildContext context) {
+    final colors = Theme.of(context).colorScheme;
     final theme = Theme.of(context);
-    final colors = theme.colorScheme;
-    final canPop = Navigator.of(context).canPop();
 
-    Widget? resolvedLeading = leading;
-    if (resolvedLeading == null && automaticallyImplyLeading && canPop) {
-      resolvedLeading = AdaptiveGlassIconButton(
-        onPressed: () => Navigator.of(context).maybePop(),
-        icon: const BackButtonIcon(),
-        tooltip: MaterialLocalizations.of(context).backButtonTooltip,
-        size: 40,
-        iconSize: 18,
-      );
-    }
-
-    Widget? trailing;
-    if (actions case final items? when items.isNotEmpty) {
-      trailing = Row(mainAxisSize: MainAxisSize.min, children: items);
-    }
+    final resolvedLeading = leading ??
+        (Navigator.of(context).canPop()
+            ? IconButton(
+                icon: const Icon(Icons.arrow_back),
+                onPressed: () => Navigator.of(context).pop(),
+              )
+            : null);
 
     return SafeArea(
       bottom: false,
       child: Padding(
         padding: const EdgeInsets.fromLTRB(12, 8, 12, 4),
-        child: AdaptiveGlassCard(
-          borderRadius: 24,
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
-          glassAlpha: 0.14,
-          borderAlpha: 0.28,
-          child: SizedBox(
-            height: kToolbarHeight - 4,
-            child: NavigationToolbar(
-              centerMiddle: centerTitle,
-              leading: resolvedLeading,
-              middle: DefaultTextStyle(
-                style:
-                    theme.textTheme.titleLarge?.copyWith(
-                      color: colors.onSurface,
-                    ) ??
-                    TextStyle(color: colors.onSurface),
-                child: title,
-              ),
-              trailing: trailing,
+        child: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+          decoration: BoxDecoration(
+            color: colors.surface.withValues(alpha: 0.92),
+            borderRadius: BorderRadius.circular(20),
+            border: Border.all(
+              color: colors.outlineVariant.withValues(alpha: 0.15),
             ),
+          ),
+          child: NavigationToolbar(
+            centerMiddle: centerTitle,
+            leading: resolvedLeading,
+            middle: DefaultTextStyle(
+              style: theme.textTheme.titleLarge?.copyWith(
+                    color: colors.onSurface,
+                  ) ??
+                  TextStyle(color: colors.onSurface),
+              child: title,
+            ),
+            trailing: actions != null
+                ? Row(mainAxisSize: MainAxisSize.min, children: actions!)
+                : null,
           ),
         ),
       ),

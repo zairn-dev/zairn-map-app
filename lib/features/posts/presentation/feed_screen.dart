@@ -5,10 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:liquid_glass_renderer/liquid_glass_renderer.dart';
 import 'package:maplibre_gl/maplibre_gl.dart';
 
-import '../../../core/navigation/adaptive_liquid_glass.dart';
 import '../../../core/router/app_routes.dart';
 import '../../../core/widgets/adaptive_glass_card.dart';
 import '../../../core/widgets/adaptive_glass_pill_button.dart';
@@ -831,31 +829,24 @@ class _PostComposerSheetState extends ConsumerState<PostComposerSheet> {
     final insets = MediaQuery.viewInsetsOf(context);
     final fullThreshold = (100 - _visibilityValue.round()).clamp(0, 100);
     final partialThreshold = (70 - _visibilityValue.round()).clamp(0, 100);
-    final shape = LiquidRoundedSuperellipse(
-      borderRadius: 30,
-      side: BorderSide(color: colors.outlineVariant.withValues(alpha: 0.32)),
-    );
-
     return Padding(
       padding: EdgeInsets.fromLTRB(16, 10, 16, 16 + insets.bottom),
-      child: AdaptiveLiquidGlass(
-        shape: shape,
-        settings: LiquidGlassSettings(
-          thickness: 18,
-          blur: 6,
-          glassColor: colors.surface.withValues(alpha: 0.18),
-          lightIntensity: 0.52,
-          ambientStrength: 0.2,
-          saturation: 1.08,
-          chromaticAberration: 0.002,
+      child: Container(
+        decoration: BoxDecoration(
+          color: colors.surface,
+          borderRadius: BorderRadius.circular(30),
+          border: Border.all(color: colors.outlineVariant.withValues(alpha: 0.15)),
+          boxShadow: [
+            BoxShadow(
+              color: colors.shadow.withValues(alpha: 0.1),
+              blurRadius: 20,
+              offset: const Offset(0, -4),
+            ),
+          ],
         ),
-        child: DecoratedBox(
-          decoration: ShapeDecoration(
-            color: colors.surface.withValues(alpha: 0.18),
-            shape: shape,
-          ),
-          child: Material(
-            color: Colors.transparent,
+        child: Material(
+          color: Colors.transparent,
+          borderRadius: BorderRadius.circular(30),
             child: Padding(
               padding: const EdgeInsets.fromLTRB(24, 16, 24, 24),
               child: SingleChildScrollView(
@@ -1061,7 +1052,6 @@ class _PostComposerSheetState extends ConsumerState<PostComposerSheet> {
                 ),
               ),
             ),
-          ),
         ),
       ),
     );
